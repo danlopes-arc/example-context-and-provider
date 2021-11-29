@@ -8,20 +8,19 @@ export interface CountService {
 
 export const CountContext = React.createContext<CountService | undefined>(undefined)
 
-export const CountProvider: React.FC<{ initalCount?: number }> =
-  ({ children, initalCount = 0 }) => {
-    const [count, setCount] = useState(initalCount)
-    const increment = () => setCount((count) => count + 1)
-    const decrement = () => setCount((count) => count - 1)
+export const CountProvider: React.FC = ({ children }) => {
+  const [count, setCount] = useState(0)
+  const increment = () => setCount((count) => count + 1)
+  const decrement = () => setCount((count) => count - 1)
 
-    return <CountContext.Provider value={{
-      count,
-      increment,
-      decrement
-    }}>
-      {children}
-    </CountContext.Provider>
-  }
+  return <CountContext.Provider value={{
+    count,
+    increment,
+    decrement
+  }}>
+    {children}
+  </CountContext.Provider>
+}
 
 export const useCount = (): CountService => {
   const context = useContext(CountContext)
