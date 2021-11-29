@@ -3,22 +3,21 @@ import { act } from "react-dom/test-utils"
 import { CountContext, CountProvider, CountService, useCount } from "./CountService"
 
 describe('useCount', () => {
-
-  const countServiceMock: jest.Mocked<CountService> = {
-    count: 0,
-    increment: jest.fn(),
-    decrement: jest.fn()
-  }
-
-  const CountProviderMock: React.FC = ({ children }) => {
-    return (
-      <CountContext.Provider value={countServiceMock}>
-        {children}
-      </CountContext.Provider>
-    )
-  }
-
   it('uses CountContext', () => {
+    const countServiceMock: jest.Mocked<CountService> = {
+      count: 0,
+      increment: jest.fn(),
+      decrement: jest.fn()
+    }
+
+    const CountProviderMock: React.FC = ({ children }) => {
+      return (
+        <CountContext.Provider value={countServiceMock}>
+          {children}
+        </CountContext.Provider>
+      )
+    }
+
     const { result } = renderHook(() => useCount(), {
       wrapper: CountProviderMock
     })
