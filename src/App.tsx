@@ -1,24 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCount } from './services/CountService';
 
 function App() {
+  const { count, increment, decrement } = useCount()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Counter</h1>
+      <p>
+        Count: {count}
+        {' '}
+        <button onClick={increment}>+</button>
+        <button onClick={decrement} disabled={count <= 0}>-</button>
+      </p>
     </div>
   );
 }
