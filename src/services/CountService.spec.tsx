@@ -1,5 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
-import { act } from "react-dom/test-utils"
+import { act, renderHook } from "@testing-library/react-hooks"
 import { CountContext, CountProvider, CountService, useCount } from "./CountService"
 
 describe('useCount', () => {
@@ -34,38 +33,42 @@ describe('useCount', () => {
 })
 
 describe('CountProvider', () => {
-  it('initializes with count as 0', () => {
-    const { result } = renderHook(() => useCount(), {
-      wrapper: CountProvider
-    })
+  const renderUseCounter = () => renderHook(() => useCount(), {
+    wrapper: CountProvider
+  })
 
-    expect(result.error).not.toBeDefined()
+  it('initializes with count as 0', () => {
+    const { result } = renderUseCounter()
+
     expect(result.current.count).toBe(0)
   })
 
   it('increments count by 1', () => {
-    const { result } = renderHook(() => useCount(), {
-      wrapper: CountProvider
-    })
+    const { result } = renderUseCounter()
 
-    act(() => {
-      result.current.increment()
-    })
+    act(() => result.current.increment())
 
-    expect(result.error).not.toBeDefined()
     expect(result.current.count).toBe(1)
+
+    act(() => result.current.increment())
+
+    expect(result.current.count).toBe(2)
   })
 
   it('decrements count by 1', () => {
-    const { result } = renderHook(() => useCount(), {
-      wrapper: CountProvider
-    })
+    const { result } = renderUseCounter()
 
     act(() => {
-      result.current.decrement()
+      result.current.increment()
+      result.current.increment()
     })
 
-    expect(result.error).not.toBeDefined()
-    expect(result.current.count).toBe(-1)
+    act(() => result.current.decrement())
+
+    expect(result.current.count).toBe(1)
+
+    act(() => result.current.decrement())
+
+    expect(result.current.count).toBe(0)
   })
 })
